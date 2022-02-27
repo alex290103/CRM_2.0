@@ -1,0 +1,6 @@
+asgiref==3.4.1
+Django==4.0
+django-google-charts==0.1.1
+django-qsstats-magic==1.1.0
+phonenumbers==8.12.40
+sqlparse==0.4.2

@@ -1,0 +1,39 @@
+<div class="col-md-8">
+  <h3>КЛИЕНТЫ</h3>
+
+  <table id="KlientTable" class="table table-striped">
+    <tr>
+      <th>Клиент</th>
+      <th>Услуга</th>
+      <th>Статус</th>
+      <th>Источник</th>
+    </tr>
+    {% if klients %}
+    {% for k in klients %}
+    <tr id="klient-{{k.id}}">
+        <td class="KlientName KlientData" name="name">{{k.f_name}} {{k.s_name}} </td>
+        <td class="KlientServise KlientData" name="servise">
+          {% for i in k.servise.all %}
+          <p>{{i}}</p> 
+          {% endfor %} 
+        </td>
+        <td class="KlientStatus KlientData" name="status">{{k.status}}</td>
+        <td class="KlientIstochnik KlientData" name="istochnick">{{k.istochnik}}</td>
+        <td align="center">
+            <button class="btn btn-success form-control" onClick="editKlient({{k.id}})" data-toggle="modal" data-target="#myModal">EDIT</button>
+        </td>
+        <td align="center">
+            <button class="btn btn-danger form-control" onClick="deleteKlient({{k.id}})">DELETE</button>
+        </td>
+    </tr>
+    {% endfor %}
+    {% else %}
+      У вас еще нет клиентов
+    {% endif %}
+  </table>
+
+</div>
+
+
+
+

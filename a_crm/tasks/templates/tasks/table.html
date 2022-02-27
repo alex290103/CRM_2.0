@@ -1,0 +1,43 @@
+<div class="col-md-8">
+    <h3>Услуги</h3>
+    {{nowdata}} 
+    <table id="taskTable" class="table table-striped">
+      <tr>
+        <th>Клиент</th>
+        <th>Задача</th>
+        <th>Дедлайн</th>
+        <th>Выполнено</th>
+      </tr>
+      {% if tasks %}
+      {% for t in tasks %}
+      <tr id="task-{{t.id}}">
+          <td class="taskKlient taskData" name="klient" value={{t.klient.id}}>{{t.klient}}</td>
+          <td class="taskTask taskData" name="task">{{t.task}}</td>  
+          {% if t.deadline < nowdata and t.checked == False %}  
+          <td class="taskDeadline taskData color_deadline" name="deadline"><font color='red'>{{t.deadline}}</font></td> 
+          {% elif t.checked == True %}
+          <td class="taskDeadline taskData color_deadline" name="deadline"><font color='green'>{{t.deadline}}</font></td>  
+          {% else %}
+          <td class="taskDeadline taskData color_deadline" name="deadline">{{t.deadline}}</td> 
+          {% endif %}  
+          
+          {% if t.checked == False %}
+           <td><input id="checked" type="checkbox" name="checked"  onClick="OnCheck({{t.id}})"></td>
+          {% else %}
+           <td><input id="checked" type="checkbox" name="checked" checked onClick="OnCheck({{t.id}})"></td>
+          {% endif %}         
+          <td align="center">
+              <button class="btn btn-success form-control" onClick="editTask({{t.id}})" data-toggle="modal" data-target="#myModal">EDIT</button>
+          </td>
+          <td align="center">
+              <button class="btn btn-danger form-control" onClick="deleteTask({{t.id}})">DELETE</button>
+          </td>
+      </tr>
+      {% endfor %}
+      {% else %}
+        У вас нет ни одной задачи
+      {% endif %}
+    </table>
+
+  </div>
+  

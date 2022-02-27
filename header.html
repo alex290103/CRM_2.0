@@ -1,0 +1,74 @@
+{% load static %}
+<div class="header-wrapper">
+                <div class="container">
+                 
+                
+                
+			<header role="banner">
+            <div class="row row-with-vspace site-branding">
+                
+					<div class="col-sm-2  site-title">
+						<h1 class="site-title-heading">
+								<img src="{% static 'images/logo_name.png' %}" class="img-logo">
+						</h1>
+						
+					</div><!-- Close col sm2-->
+					<div class="col-sm-10 page-header-top-right ">
+                    
+                    <div class="site-description">
+                    <div class="row">
+							<div class="col-sm-8 slogan">
+								<h2>Наши клиенты - наше будущее</h2>
+								{% if user.is_authenticated %}
+								<h2 class=''><a href="{% url 'logout_view' %}">Выход</a></h2>
+                                {% else %}
+								<h2 class=''><a href="{% url 'user_view' %}">Вход в систему</a></h2>
+								{% endif %}
+					        </div> 
+                            
+                    </div>
+                    </div>
+                    <!-- Close col site description-->
+                        
+                        
+                   <div class="row main-navigation">
+					<div class="col-md-12">
+                   
+						<nav class="navbar navbar-default" role="navigation">
+							<div class="navbar-header">
+								<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-primary-collapse">
+									<span class="sr-only">Toggle navigation</span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+								</button>
+							</div>
+							
+							<div class="collapse navbar-collapse navbar-primary-collapse">
+								<ul id="menu-main-menu" class="nav navbar-nav1"><li id="menu-item-28" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-28"><a href="{% url 'main_page' %}">Главная</a></li>
+<li id="menu-item-35" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-37"><a href="{% url 'klients_table' %}">Клиенты</a></li>
+<li id="menu-item-37" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-37"><a href="{% url 'services_page' %}">Услуги</a></li>
+<li id="menu-item-37" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-37"><a href="{% url 'tasks_table' %}">Задачи</a></li>
+{% comment %} <li id="menu-item-40" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-40"><a href="{% url 'teachers_page' %}">Преподователи</a></li> {% endcomment %}
+<li id="menu-item-37" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-37"><a href="{% url 'ad_page' %}">Реклама</a></li>
+<li id="menu-item-37" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-37"><a href="{% url 'table' %}">Статистика</a></li>
+</ul> 
+                               
+								 
+							</div><!--.navbar-collapse-->
+						</nav>
+					</div>
+				</div><!--.main-navigation-->
+						<div class="sr-only">
+							<a href="#content" title="Skip to content">Skip to content</a>
+						</div>
+						
+					</div>
+				</div><!--row .site-branding-->
+				
+				
+			</header>
+            </div><!--.container-->
+            </div><!--.header-wrapper-->
+<!-- partial -->
+  <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'></script>

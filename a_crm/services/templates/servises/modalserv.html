@@ -1,0 +1,31 @@
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+          <h4 class="modal-title" id="myModalLabel">Редактировать услугу</h4>
+        </div>
+
+        <form id="updateServise" action="">
+        <div class="modal-body">
+            <input class="form-control" id="form-id" type="hidden" name="formId"/>
+            <label for="name">Услуга</label>
+            <input class="form-control" id="form-name" type="text" name="formName"/>
+            <label for="address">Тип Услуги</label>
+            <input class="form-control" id="form-type" type="text" name="formType"/>
+            <label for="teacher">Преподователь</label>
+            <select multiple class="form-control" id="form-teacher" name="formTeacher">
+              {% for t in teachers %}
+              <option value="{{t.id}}"> {{t}} </option>
+              {% endfor %}
+            </select>
+            
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" >Сохранить изменения</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+        </div>
+        </form>
+
+      </div>
+</div>

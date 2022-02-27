@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block tasks %}
+<div class="container">
+    <div class="row">
+      {% if user.is_authenticated %}
+      {% include 'tasks/form.html' %}
+      {% include 'tasks/table.html' %}
+      {% else %}
+      <h3> Эта страница видна только авторизованным пользователям </h3>
+      {% endif %}
+    </div>
+  </div>
+
+{% include 'tasks/modal.html' %}
+</div>
+{% endblock tasks %}
+
+{% block javascript %}
+<script>
+
+$("form#addTasks").submit(function() {
+    var klientInput = $('select[name="klient"]').val(); 
+    var taskInput = $('textarea[name="task"]').val().trim();
+    var deadlineInput = $('input[name="deadline"]').val().trim();   
+    var hr_managerInput = $('input[name="hr_manager"]').val().trim();
+            $.ajax({
+                url: '{% url "task_create" %}',
+                data: {
+                     'klient': klientInput,
+                     'task': taskInput,
+                     'deadline': deadlineInput,
+                     'hr_manager': hr_managerInput,
+                    },
+                dataType: 'json',
+                success: function (data) {
+                      if (data.task) {
+                        console.log("Есть данные!")
+                        appendToTaskTable(data.task);
+                      }
+                  }
+            });
+$('form#addTasks').trigger("reset");
+return false;
+});
+      function appendToTaskTable(t) {
+        $("#taskTable > tbody:last-child").append(`  
+              <tr id="task-${t.id}">
+                <td class="taskKlient taskData" name="klient">${t.f_name} ${t.s_name}</td>
+                '<td class="taskTask taskData" name="task">${t.task}</td>  
+                {% if t.deadline < nowdata and t.checked == False %}  
+                '<td class="taskDeadline taskData color_deadline" name="deadline"><font color='red'>${t.date_obj}</font></td> 
+                {% elif t.checked == True %}
+                '<td class="taskDeadline taskData color_deadline" name="deadline"><font color='green'>${t.date_obj}</font></td>  
+                {% else %}
+                '<td class="taskDeadline taskData color_deadline" name="deadline">${t.deadline}</td> 
+                {% endif %}
+                '<td><input id="checked" type="checkbox" name="checked"  onchange="OnCheck(${t.id})"></td>         
+                '<td align="center">
+                    <button class="btn btn-success form-control" onClick="editTask(${t.id})" data-toggle="modal" data-target="#myModal">EDIT</button>
+                </td>
+                <td align="center">
+                    <button class="btn btn-danger form-control" onClick="deleteTask(${t.id})">DELETE</button>
+                </td>
+            </tr>
+          `);
+      } 
+
+$("form#updateTask").submit(function() {
+    var idInput = $('input[name="formId"]').val().trim();
+    var klientInput = $('select[name="formKlient"]').val(); 
+    var taskInput = $('textarea[name="formTask"]').val().trim();
+    var deadlineInput = $('input[name="formDeadline"]').val().trim(); 
+            $.ajax({
+                url: '{% url "update_task" %}',
+                data: { 
+                    'id': idInput,
+                    'klient': klientInput,
+                    'task': taskInput,
+                    'deadline': deadlineInput,
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.task) {
+                      updateToTaskTabel(data.task);
+                    }
+                }
+            });
+        $('form#updateTask').trigger("reset");
+        $('#myModal').modal('hide');
+        return false;
+});
+
+function OnCheck(id) {
+
+    $.ajax({
+      url: '{% url "on_check" %}',
+      data: {
+          'id': id,
+      },
+      dataType: 'json'
+  });
+}
+
+{% comment %} function editTask(id) {
+  $.ajax({
+      url: '{% url "edit_task" %}',
+      data: {
+          'id' : id,
+      },
+      dataType: 'json',
+      success: function (data) {
+          if (data.task) {
+            editTaskTable(data.task);
+          }
+      } 
+  });
+}
+
+function editTaskTable(task) {
+
+  $('#form-id').val({{klient.}});
+  $('#form-f_name').val(f_name);
+  $('#form-l_name').val(s_name);
+  $('#form-town').val(town);
+  } {% endcomment %}
+function editTask(id) {
+      if (id) {
+        tr_id = "#task-" + id;
+        klient = $(tr_id).find(".taskKlient").text().trim();
+        task = $(tr_id).find(".taskTask").text();
+        deadline = $(tr_id).find(".taskDeadline").text();
+        $('#form-id').val(id);
+        $(`#form-klient option:contains(${klient})`).prop('selected', true);
+        $('#form-task').val(task);
+      }
+      $.ajax({
+        url: '{% url "edit_task" %}',
+        data: {
+            'id' : id,
+        },
+        dataType: 'json',
+        success: function (data) {
+            if (data.task) {
+              $('#form-deadline').val(data.task.date);
+            }
+        } 
+    });
+} 
+
+function updateToTaskTabel(task){
+        $("#taskTable #task-" + task.id).children(".taskData").each(function() {
+            var attr = $(this).attr("name");
+            if (attr == "klient") {
+              $(this).text(task.f_name+' '+task.s_name);
+            } else if (attr == "task") {
+              $(this).text(task.task);
+            } else if (attr == "deadline") {
+              $(this).text(task.deadline);
+            }
+          });
+      }   
+function deleteTask(id) {
+    var action = confirm("Точно хотите удалить данную задачу?");
+    if (action != false) {
+              $.ajax({
+                      url: '{% url "delete_task" %}',
+                      data: {
+                          'id': id,
+                      },
+                      dataType: 'json',
+                      success: function (data) {
+                          if (data.deleted) {
+                            $("#taskTable #task-" + id).remove();
+                          }
+                      }
+                  });
+                }
+}      
+
+
+</script>
+{% endblock javascript %}

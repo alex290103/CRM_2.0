@@ -1,0 +1,27 @@
+
+<div class="col-md-4 ">
+    <h3>ДОБАВИТЬ ЗАДАЧУ</h3>
+    
+    <form id="addTasks" action="">
+      <div class="form-group">
+      <select class="form-control" name="klient">
+        {% for k in allklients %}
+        <option value="{{k.id}}"> {{k}} </option>
+        {% endfor %}
+      </select>
+      </div>
+      <div class="form-group">
+        <textarea class="form-control" rows="5" type="text" name="task" placeholder="Введите текст вашей задачи"  required></textarea>
+      </div>
+      <div class="form-group">
+        <input class="form-control"  type="date" name="deadline" required>
+      </div>
+      <div class="form-group" >
+        <input class="form-control"  type="hidden" name="hr_manager" value={{user}} required>
+      </div>
+      <button class="btn btn-primary form-control" type="submit">Добавить</button>
+    </form>
+
+  </div>
+
+  

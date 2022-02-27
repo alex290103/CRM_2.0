@@ -1,0 +1,33 @@
+
+      <div class="col-md-4 ">
+        <h3>ДОБАВИТЬ УСЛУГУ</h3>
+        
+        <form id="addServise" action="">
+          <div class="form-group">
+            <input class="form-control" type="text" name="name" placeholder="Имя" required>
+          </div>
+          <div class="form-group">
+            <input class="form-control" type="text" name="type" placeholder="Тип" required>
+          </div>
+          <div class="form-group">
+          <select multiple class="form-control" name="teacher">
+            {% for t in teachers %}
+            <option value="{{t.id}}"> {{t}} </option>
+            {% endfor %}
+          </select>
+          </div>
+          <button class="btn btn-primary form-control" type="submit">Добавить</button>
+        </form>
+
+        <form id="addTeachers" action="">
+            <h3>ДОБАВИТЬ ПРЕПОДОВАТЕЛЯ</h3>
+            <div class="form-group">
+              <input class="form-control" type="text" name="f_name" placeholder="Имя" required>
+            </div>
+            <div class="form-group">
+              <input class="form-control" type="text" name="s_name" placeholder="Фамилия" required>
+            </div>
+            <button class="btn btn-primary form-control" type="submit">Добавить</button>
+          </form>
+    
+       </div>

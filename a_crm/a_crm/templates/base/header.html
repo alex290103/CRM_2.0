@@ -1,0 +1,29 @@
+{% if user.is_authenticated %}
+<p> Hello {{ user.email}} <p>
+{% endif %}
+<div>
+    <style>
+        li { display: inline-block; }
+    </style>
+    <ul> 
+    <li><a href="{% url 'regist_view' %}">Регистрация</a></li>
+    <li>{% if user.is_authenticated %}
+        <p><a href="{% url 'logout_view' %}">Выход</a></p>
+        {% else %}
+        <p><a href="{% url 'auth_view' %}">Авторизация</a></p>
+        {% endif %}
+        </li>
+    </ul> 
+</div>
+
+<div>
+<style>
+    li { display: inline-block; }
+</style>
+<ul> 
+<li><a href="{% url 'klients_table' %}">Клиенты</a></li>
+<li><a href="{% url 'servises_form' %}">Услуги</a></li>
+<li><a href="{% url 'task_table' %}">Задачи</a></li>
+<li><a href="{% url 'statistika_table' %}">Статистика</a></li>
+</ul> 
+</div>

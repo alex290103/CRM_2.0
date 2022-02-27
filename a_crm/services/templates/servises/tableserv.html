@@ -1,0 +1,33 @@
+<div class="col-md-8">
+    <h3>Услуги</h3>
+
+    <table id="serviseTable" class="table table-striped">
+      <tr>
+        <th>Имя</th>
+        <th>Тип</th>
+        <th>Преподователь</th>
+      </tr>
+      {% if servises %}
+      {% for s in servises %}
+      <tr id="servise-{{s.id}}">
+          <td class="serviseName serviseData" name="name">{{s.name}}</td>
+          <td class="serviseType serviseData" name="type">{{s.type}}</td>             
+          <td class="serviseTeacher serviseData" name="teacher">
+            {% for i in s.teacher.all %}
+            <p>{{i}}</p> 
+            {% endfor %} 
+          </td>
+          <td align="center">
+              <button class="btn btn-success form-control" onClick="editServise({{s.id}})" data-toggle="modal" data-target="#myModal">EDIT</button>
+          </td>
+          <td align="center">
+              <button class="btn btn-danger form-control" onClick="deleteServise({{s.id}})">DELETE</button>
+          </td>
+      </tr>
+      {% endfor %}
+      {% else %}
+        No servise
+      {% endif %}
+    </table>
+
+  </div>

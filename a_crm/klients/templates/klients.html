@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+
+{% block klients %}
+<div class="container">
+ <div class='row'>
+{% include 'klients/formklients.html' %}
+{% include 'klients/tableklients.html' %}
+{% include 'klients/modalklient.html' %}
+ </div>
+</div>
+{% endblock klients %}
+
+{% block javascript %}
+<script>
+$("form#addKlient").submit(function() {
+  var f_nameInput = $('input[name="f_name"]').val().trim(); 
+  var l_nameInput = $('input[name="l_name"]').val().trim();
+  var townInput = $('input[name="town"]').val().trim();
+  var schoolInput = $('input[name="school"]').val().trim();
+  var telephoneInput = $('input[name="telephone"]').val().trim();
+  var serviseInput = String($('select[name="servise"]').val());
+  var statusInput = $('select[name="status"]').val().trim();
+  var istochnikInput = $('select[name="istochnik"]').val().trim();
+                $.ajax({
+                    url: '{% url "add_klient" %}',
+                    data: {
+                        'f_name': f_nameInput,
+                        'l_name': l_nameInput,
+                        'town': townInput,
+                        'school': schoolInput,
+                        'telephone': telephoneInput,
+                        'servise': serviseInput,
+                        'status': statusInput,
+                        'istochnik': istochnikInput},
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.klient) {
+                          appendToKlientTable(data.klient);
+                        }
+                    }
+                });
+$('form#addKlient').trigger("reset");
+return false;
+        });
+function appendToKlientTable(klient) {
+    $("#KlientTable > tbody:last-child").append(`
+            <tr id="klient-${klient.id}">
+                <td> class="KlientName KlientData" name="name">${klient.f_name} ${klient.s_name}</td>
+                '<td class="KlientServise" name="type">${klient.t_obj}</td>
+                '<td class="KlientStatus" name="status">${klient.status}</td>
+                '<td class="KlientIstochnik" name="istochnick">${klient.istochnik}</td>
+                '<td align="center">
+                    <button class="btn btn-success form-control" onClick="editKlient(${klient.id})" data-toggle="modal" data-target="#myModal">EDIT</button>
+                </td>
+                <td align="center">
+                    <button class="btn btn-danger form-control" onClick="deleteKlient(${klient.id})">DELETE</button>
+                </td>
+            </tr>
+            `);
+}
+
+$("form#updateKlient").submit(function() {
+    var idInput = $('input[name="formId"]').val().trim();
+    var f_nameInput = $('input[name="formf_name"]').val().trim(); 
+    var l_nameInput = $('input[name="forml_name"]').val().trim();
+    var townInput = $('input[name="formtown"]').val().trim();
+    var schoolInput = $('input[name="formschool"]').val().trim();
+    var telephoneInput = $('input[name="formtelephone"]').val().trim();
+    
+    var serviseInput = String($('select[name="formservise"]').val());
+    
+    var statusInput = $('select[name="formstatus"]').val().trim();
+    var istochnikInput = $('select[name="formistochnik"]').val().trim();
+    
+    $.ajax({
+        url: '{% url "update_klient" %}',
+        data: {
+            'id' : idInput,
+            'f_name': f_nameInput,
+            'l_name': l_nameInput,
+            'town': townInput,
+            'school': schoolInput,
+            'telephone': telephoneInput,
+            'servise': serviseInput,
+            'status': statusInput,
+            'istochnik': istochnikInput},
+        dataType: 'json',
+        success: function (data) {
+            if (data.klient) {
+              updateToKlientsTabel(data.klient);
+            }
+        }
+    });
+        $('form#updateKlient').trigger("reset");
+        $('#myModal').modal('hide');
+        return false;
+});
+
+function updateToKlientsTabel(klient){
+    $("#KlientTable #klient-" + klient.id).children(".KlientData").each(function() {
+        var attr = $(this).attr("name");
+        alert(attr);
+        if (attr == "name") {
+          $(this).text(klient.f_name + ' ' + klient.s_name);
+        } else if (attr == "servise") {
+            if (klient.t_obj != ''){
+            $(this).text(klient.t_obj); 
+            };
+        } else if (attr == "status") {
+            $(this).text(klient.status);
+        } else if (attr == "istochnik") {
+            $(this).text(klient.istochnik);
+        } 
+      });
+  };
+
+function editKlient(id) {
+        $.ajax({
+            url: '{% url "edit_klient" %}',
+            data: {
+                'id' : id,
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.klient) {
+                  editKlientTable(data.klient);
+                }
+            } 
+        });
+}
+
+function editKlientTable(klient) {
+id = klient.id;
+f_name = klient.f_name;
+s_name = klient.s_name;
+town = klient.town;
+school = klient.school;
+telephone = klient.telephone;
+status = klient.status;
+istochnik = klient.istochnik;
+$('#form-id').val(id);
+$('#form-f_name').val(f_name);
+$('#form-l_name').val(s_name);
+$('#form-town').val(town);
+$('#form-school').val(school);
+$('#form-telephone').val(telephone);
+$('#form-status').val(status);
+$('#form-istochnik').val(istochnik);
+}
+
+
+function deleteKlient(id) {
+    var action = confirm("Точно хотите удалить данного клиента?");
+    if (action != false) {
+              $.ajax({
+                      url: '{% url "delete_klient" %}',
+                      data: {
+                          'id': id,
+                      },
+                      dataType: 'json',
+                      success: function (data) {
+                          if (data.deleted) {
+                            $("#KlientTable #klient-" + id).remove();
+                          }
+                      }
+                  });
+                }
+}     
+</script>
+
+{% endblock javascript%}

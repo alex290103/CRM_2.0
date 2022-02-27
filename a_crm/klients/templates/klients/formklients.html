@@ -1,0 +1,60 @@
+
+        <div class="col-md-4 ">
+          <h3>ДОБАВИТЬ КЛИЕНТА</h3>
+          
+          <form id="addKlient" action="">
+            <div class="form-group">
+              <input class="form-control" type="text" name="f_name" placeholder="Имя" required>
+            </div>
+            <div class="form-group">
+              <input class="form-control" type="text" name="l_name" placeholder="Фамилия" required>
+            </div>
+
+            <div class="form-group">
+              <input class="form-control" type="text" name="town" placeholder="Город" required>
+            </div>
+            <div class="form-group">
+              <input class="form-control" type="text" name="school" placeholder="Школа" required>
+            </div>
+
+            <div class="form-group">
+                <input class="form-control" pattern="^\+?1?\d{9,15}$" name="telephone" placeholder="Телефон" required>
+            </div>
+
+            <div class="form-group">
+              <select multiple class="form-control" name="servise">
+                {% for s in allservise %}
+                <option value="{{s.id}}"> {{s}} </option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="form-group">
+            <select class='form-control' name="status">
+                <option> Интересуется </option>
+                <option> Зарегистрирован </option>
+                <option> Уже клиент </option>
+            </select>
+            </div>
+
+            <div class="form-group">
+              <select class='form-control' name="istochnik">
+                    <option> Другое </option>
+                    <option> Сайт </option>
+                    <option> Звонок </option>
+                    <option> Реклама </option>
+                    <option> Уже клиент </option>
+               </select>
+            </div>
+
+            <button class="btn btn-primary form-control" type="submit">Создать</button>
+          </form>
+        </div>
+        
+
+
+
+
+
+
+    

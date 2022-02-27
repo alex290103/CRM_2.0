@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block services %}
+<div class="container">
+  <div class="row">
+{% include 'servises/formserv.html' %}
+{% include 'servises/tableserv.html' %}      
+  </div>
+</div>
+  {% include 'servises/modalserv.html' %}
+
+{% endblock services %}
+
+{% block javascript %}
+<script>
+
+$("form#addServise").submit(function() {
+    var nameInput = $('input[name="name"]').val().trim();
+    var typeInput = $('input[name="type"]').val().trim();
+    var teacherInput = String($('select[name="teacher"]').val());
+    alert(teacherInput);
+            $.ajax({
+                url: '{% url "servise_create" %}',
+                data: {
+                     'name': nameInput,
+                     'type': typeInput,
+                     'teacher': teacherInput,
+                },
+                dataType: 'json',
+                success: function (data) {
+                      alert(data.teacher)
+                      if (data.servise) {
+                        console.log("Есть данные!")
+                        appendToServTable(data.servise);
+                      }
+                  }
+            });
+$('form#addServise').trigger("reset");
+return false;
+});
+      function appendToServTable(servise) {
+        $("#serviseTable > tbody:last-child").append(`
+              <tr id="servise-${servise.id}">
+                  <td class="serviseName" name="name">${servise.name}</td>
+                  '<td class="serviseType" name="type">${servise.type}</td>
+                  '<td class="serviseTeacher" name="type">${servise.t_obj}</td>
+                  '<td align="center">
+                      <button class="btn btn-success form-control" onClick="editServise(${servise.id})" data-toggle="modal" data-target="#myModal")">EDIT</button>
+                  </td>
+                  <td align="center">
+                      <button class="btn btn-danger form-control" onClick="deleteServise(${servise.id})">DELETE</button>
+                  </td>
+              </tr>
+          `);
+      } 
+
+$("form#updateServise").submit(function() {
+    var idInput = $('input[name="formId"]').val().trim();
+    var nameInput = $('input[name="formName"]').val().trim();
+    var typeInput = $('input[name="formType"]').val().trim();
+    var teacherInput = String($('select[name="formTeacher"]').val());
+            $.ajax({
+                url: '{% url "servise_update" %}',
+                data: { 
+                    'id': idInput,
+                    'name': nameInput,
+                    'type': typeInput,
+                    'teacher': teacherInput
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.servise) {
+                      updateToServiseTabel(data.servise);
+                    }
+                }
+            });
+        $('form#updateServise').trigger("reset");
+        $('#myModal').modal('hide');
+        return false;
+});
+
+function editServise(id) {
+      if (id) {
+        tr_id = "#servise-" + id;
+        name = $(tr_id).find(".serviseName").text();
+        type = $(tr_id).find(".serviseType").text();
+        teacher = $(tr_id).find(".serviseTeacher").text();
+        $('#form-id').val(id);
+        $('#form-name').val(name);
+        $('#form-type').val(type);
+        $('#form-teacher').val(teacher);
+      }
+}
+function updateToServiseTabel(servise){
+        $("#serviseTable #servise-" + servise.id).children(".serviseData").each(function() {
+            var attr = $(this).attr("name");
+            alert(attr)
+            if (attr == "name") {
+              $(this).text(servise.name);
+            } else if (attr == "type") {
+              $(this).text(servise.type);
+            } else if (attr == "teacher") {
+              $(this).text(servise.t_obj);
+            }
+          });
+      }   
+function deleteServise(id) {
+    var action = confirm("Точно хотите удалить данную услугу?");
+    if (action != false) {
+              $.ajax({
+                      url: '{% url "servise_delete" %}',
+                      data: {
+                          'id': id,
+                      },
+                      dataType: 'json',
+                      success: function (data) {
+                          if (data.deleted) {
+                            $("#serviseTable #servise-" + id).remove();
+                          }
+                      }
+                  });
+                }
+}      
+
+$("form#addTeachers").submit(function() {
+    var f_name = $('input[name="f_name"]').val().trim();
+    var s_name = $('input[name="s_name"]').val().trim();
+    
+            $.ajax({
+                url: '{% url "teachers_add" %}',
+                data: {
+                     'f_name': f_name,
+                     's_name': s_name,
+                },
+                dataType: 'json',
+            });
+
+$('form#addTeachers').trigger("reset");
+return false;
+});
+
+
+</script>
+{% endblock javascript %}

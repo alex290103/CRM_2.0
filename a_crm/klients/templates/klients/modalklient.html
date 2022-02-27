@@ -1,0 +1,51 @@
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+          <h4 class="modal-title" id="myModalLabel">РЕДАКТИРОВАТЬ КЛИЕНТА</h4>
+        </div>
+
+        <form id="updateKlient" action="">
+        <div class="modal-body">
+            <input class="form-control" id="form-id" type="hidden" name="formId"/>
+            <label for="f_name">Имя</label>
+            <input class="form-control" id='form-f_name' type="text" name="formf_name" required> 
+            <label for="l_name">Фамилия</label>
+            <input class="form-control" id='form-l_name' type="text" name="forml_name" required>
+            <label for="town">Город</label>
+            <input class="form-control" id='form-town' type="text" name="formtown" required> 
+            <label for="school">Школа</label>
+            <input class="form-control" id='form-school' type="text" name="formschool" required>
+            <label for="telephone">Телефон</label>
+            <input class="form-control" id='form-telephone' type="tel" name="formtelephone" required>
+            <label for="servise">Услуга</label> 
+            <select multiple class="form-control" id='form-servise' name="formservise">
+              {% for s in allservise %}
+                <option value="{{s.id}}"> {{s}} </option>
+                {% endfor %}
+            </select>
+            <label for="status">Статус</label>                                                    
+            <select class='form-control' id='form-status' name="formstatus">
+                <option> Интересуется </option>
+                <option> Зарегистрирован </option>
+                <option> Уже клиент </option>
+            </select>
+            <label for="telephone">Источник</label>
+            <select class='form-control' id='form-istochnik' name="formistochnik">
+                <option> Другое </option>
+                <option> Сайт </option>
+                <option> Звонок </option>
+                <option> Реклама </option>
+                <option> Уже клиент </option>
+           </select>           
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" >Save changes</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
